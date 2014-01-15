@@ -48,9 +48,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'Qu_Naer.urls'
+ROOT_URLCONF = 'main.urls'
 
-WSGI_APPLICATION = 'Qu_Naer.wsgi.application'
+WSGI_APPLICATION = 'main.wsgi.application'
 
 
 # Database
@@ -58,8 +58,12 @@ WSGI_APPLICATION = 'Qu_Naer.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': "devdb",
+        'HOST': "localhost",
+        'PORT': "5432",
+        'USER': "postgres",
+        'PASSWORD': "postgres"
     }
 }
 

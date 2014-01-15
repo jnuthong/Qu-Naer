@@ -1,0 +1,27 @@
+DROP TABLE IF EXISTS "t_user_profile";
+CREATE TABLE t_user_profile(
+	"id" bigserial primary key,
+	"user_id" bigserial,
+	"user_password" varchar(32),
+	"user_email" varchar(256),
+	"user_mobile" varchar(32),
+	"user_name" varchar(128),
+	"user_nick" varchar(128),
+	"login_type" smallint,
+	"register_time" timestamp,
+	"register_ip" varchar(32),
+	"last_login_time" timestamp,
+	"last_login_ip" varchar(32),
+	"user_image" varchar(32),
+	"real_name" varchar(32),
+	"sex" smallint,
+	"birth_year" smallint,
+	"birth_month" smallint,
+	"birth_day" smallint,
+	"province" varchar(128),
+	"city" varchar(128),
+	"district" varchar(512),
+	"signature" varchar(512),
+	"third_key" varchar(512),
+	"third_type" smallint
+);

@@ -19,6 +19,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'm8=0qg2)8gx3b!nl-z)c)828m+g@j@591#msb-y51+b7)*!dmp'
 
+# ACCESS KEY
+ACCESS_KEY = 'df^has83$47kj!gha31jk_dg46f%aj'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -36,7 +39,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps',
+    'apps.profile',
+    'apps.user',
+    'utils',
+    'apps.user_third',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -66,6 +72,8 @@ DATABASES = {
         'PASSWORD': "postgres"
     }
 }
+
+AUTH_USER_MODEL = 'user.SUser'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/

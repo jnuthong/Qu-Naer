@@ -2,6 +2,7 @@ from django.db import models
 from django.forms.models import model_to_dict
 from django.utils import timezone
 from django.core import cache
+from utils.utils import *
 
 class UserProfile(models.Model):
     user_id = models.BigIntegerField(max_length=32, blank=True)
@@ -71,3 +72,10 @@ class UserProfile(models.Model):
         user_profile.third_type = third_type
         user_profile.save()
         return user_profile
+
+    @classmethod
+    def get_user_profile_by_user_id(cls, user_id):
+        try:
+            return UserProfile.objects.get(user_id=user_id)
+        except Exception as e:
+            return None

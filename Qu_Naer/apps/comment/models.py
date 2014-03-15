@@ -3,15 +3,14 @@
 # Date: 15/04/2013
 
 from django.db import models
-from django.forms.models import model_to_dict
 from django.utils.timezone import utc
-from django.db.models import Q
+import datetime
 
-class Comment(models.Model):
-	"""
-	Comment have foreign key for some specify post
-	"""
-	user_id = models.BigIntegerField(blank=True, null=True, help_text='user id of commend')
+class MComment(models.Model):
+    """
+    Comment have foreign key for some specify post
+    """
+    user_id = models.BigIntegerField(blank=True, null=True, help_text='user id of commend')
     comment_content = models.CharField(max_length=CommentConstants.Comment_Length, blank=True, null=True)
     post_id = models.BigIntegerField(blank=True, null=True)
     post_user_id = models.BigIntegerField(blank=True, null=True)
@@ -34,7 +33,7 @@ class Comment(models.Model):
             ["discuss_user_id", "update_time", "comment_status"],
         ]
 
-	def __repr__(self):
+    def __repr__(self):
         return u"{uid = %d, cid=%d, post_id=%d}" % (self.user_id, self.pk, self.post_id)
 
     def save(self, *args, **kwargs):
@@ -44,20 +43,20 @@ class Comment(models.Model):
         if not self.create_time:
             self.create_time = datetime.datetime.utcnow().replace(tzinfo=utc)
         self.update_time = datetime.datetime.utcnow().replace(tzinfo=utc)
-        super(SComment, self).save(*args, **kwargs)
+        super(MComment, self).save(*args, **kwargs)
         return self
 
-    def update_by_comment_id():
-    	"""
-    	"""
-    	pass
+    def update_by_comment_id(self):
+        """
+        """
+        pass
 
-    def read_by_comment_id():
-    	"""
-    	"""
-    	pass
+    def read_by_comment_id(self):
+        """
+        """
+        pass
 
-    def delete_by_comment_id():
-    	"""
-    	"""
-    	pass
+    def delete_by_comment_id(self):
+        """
+        """
+        pass

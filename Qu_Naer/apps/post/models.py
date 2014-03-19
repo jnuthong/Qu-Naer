@@ -1,7 +1,10 @@
+#!/usr/bin/env python
 __author__ = 'gong'
+__create_time__ = '10/03/2014'
 
 from django.db import models
 from django.forms.models import model_to_dict
+
 
 class Post(models.Model):
     id = models.AutoField(primary_key=True)
@@ -43,4 +46,3 @@ class SharedPost(models.Model):
         db_table = 'rdb_shard_post'
         managed = True
 
-    

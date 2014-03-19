@@ -18,7 +18,8 @@ class Post(models.Model):
     post_audit = models.SmallIntegerField(blank=True, null=True)
 
     class Meta:
-        db_table = 'rdb_Post'
+        db_table = 'rdb_post'
+        managed = True
 
     def canonical(self):
         """
@@ -30,8 +31,16 @@ class Post(models.Model):
         return fields
 
 
+
+
 class SharedPost(models.Model):
     id = models.AutoField(primary_key=True)
     post_id = models.BigIntegerField(blank=True, null=False)
     user_id = models.BigIntegerField(blank=True, null=False)
     create_time = models.DateTimeField(blank=True, null=False)
+
+    class Meta:
+        db_table = 'rdb_shard_post'
+        managed = True
+
+    

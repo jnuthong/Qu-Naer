@@ -20,6 +20,8 @@ class Book(models.Model):
         db_table = 'rdb_book'
 
 
+
+
 class Author(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=128, blank=True, null=True)

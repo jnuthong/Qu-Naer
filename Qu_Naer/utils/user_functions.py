@@ -43,33 +43,33 @@ def ajax_login_required(function=None):
     return actual_decorator
 
 
-def signature_required(function=None):
-    """
-    Decorator for verify requests is originated by legal client, return
-    access deny if the request lacks a a.
-    md5(ACCESS_KEY + parameter-string +ACCESS_KEY)
-    """
-    def decorator(view_function):
-        @wraps(view_function, assigned=available_attrs(view_function))
-        def _wrapper(request, *args, **kwargs):
-            print(request.META['HTTP_SIGNATURE'])
-            if request.META['HTTP_SIGNATURE']:
-                key_list = sorted(list(dict(request.POST).keys()))
-                print(key_list)
-                s = ''.join(key_list)
-                m = hashlib.md5()
-                m.update(ACCESS_KEY.encode(encoding='utf8'))
-                m.update(s.encode(encoding='utf8'))
-                m.update(ACCESS_KEY.encode(encoding='utf8'))
-                a = m.hexdigest()
-                print(a)
-                if request.META['HTTP_SIGNATURE'] == a:
-                    return view_function(request, *args, **kwargs)
-                else:
-                    return dict(code=1001, msg="Access Deny! (reason: wrong signature)")
-            return dict(code=1000, msg="Access Deny! (reason: signature does not exist)")
-        return _wrapper
-    return decorator(function)
+# def signature_required(function=None):
+#     """
+#     Decorator for verify requests is originated by legal client, return
+#     access deny if the request lacks a a.
+#     md5(ACCESS_KEY + parameter-string +ACCESS_KEY)
+#     """
+#     def decorator(view_function):
+#         @wraps(view_function, assigned=available_attrs(view_function))
+#         def _wrapper(request, *args, **kwargs):
+#             print(request.META['HTTP_SIGNATURE'])
+#             if request.META['HTTP_SIGNATURE']:
+#                 key_list = sorted(list(dict(request.POST).keys()))
+#                 print(key_list)
+#                 s = ''.join(key_list)
+#                 m = hashlib.md5()
+#                 m.update(ACCESS_KEY.encode(encoding='utf8'))
+#                 m.update(s.encode(encoding='utf8'))
+#                 m.update(ACCESS_KEY.encode(encoding='utf8'))
+#                 a = m.hexdigest()
+#                 print(a)
+#                 if request.META['HTTP_SIGNATURE'] == a:
+#                     return view_function(request, *args, **kwargs)
+#                 else:
+#                     return dict(code=1001, msg="Access Deny! (reason: wrong signature)")
+#             return dict(code=1000, msg="Access Deny! (reason: signature does not exist)")
+#         return _wrapper
+#     return decorator(function)
 
 
 def admin_only(function=None):

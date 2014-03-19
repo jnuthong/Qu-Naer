@@ -1,5 +1,3 @@
-__author__ = 'shijiangwang'
-
 from django.conf.urls import patterns, url
 
 import apps.oauth.views

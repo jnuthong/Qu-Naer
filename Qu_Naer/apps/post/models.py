@@ -30,9 +30,6 @@ class Post(models.Model):
         return fields
 
 
-
-
-
 class SharedPost(models.Model):
     id = models.AutoField(primary_key=True)
     post_id = models.BigIntegerField(blank=True, null=False)

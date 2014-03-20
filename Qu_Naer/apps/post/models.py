@@ -28,6 +28,9 @@ class Post(models.Model):
         db_table = 'rdb_post'
         managed = True
 
+    def __str__(self):
+        return '%s, %s, %s, %s' % (self.id, self.user_id, self.book_id, self.place_id)
+
     def canonical(self):
         """
         return the object as a tuple
@@ -37,8 +40,17 @@ class Post(models.Model):
                                              'post_status', 'post_audit', 'post_image_meta'))
         return fields
 
-    def __str__(self):
-        return '%s, %s, %s, %s' % (self.id, self.user_id, self.book_id, self.place_id)
+    def canonical_trim_post(self):
+        """
+        trim post information for one post
+        """
+        fields = model_to_dict(self, fields=('id', 'user_id', 'place_id', 'post_content', 'create_time','post_image','post_image_meta'))
+        post_id = fields.pop('id')
+        fields['post_content'] = self.content
+        fields['post_id'] = post_id
+        time = fields.pop('create_time').strftime('%Y-%m-%d %H:%M:%S.000000+00:00')
+        fields['create_time'] = time
+        return fields
 
     def create_one_post(self, *args, **kwargs):
         if not self.create_time:

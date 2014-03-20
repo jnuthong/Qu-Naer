@@ -25,24 +25,43 @@ class PostLogic(object):
             return []
 
     @classmethod
-    def create_post(cls, user_id, place_id, post_content, post_image, post_source, post_type, post_image_meta, post_status=0, post_audit=0,post_theme = None):
+    def create_post(cls, **kwargs):
         try:
-            post = Post.create_post(user_id, place_id, post_content, post_image, post_source, post_type ,post_image_meta, post_status=0, post_audit=0)
-            #========need move to other py!!!!===============
-            #RLatestPost.add_new_post_to_latest_list(post)
-            #store logic
-            if post.place_id:
-                RRank.update_store_front_image_by_place_id(post.place_id,post.post_image)
-            SImageMeta.update_object_id(post.post_image_meta,post.id, object_type = 0)
-            if post_theme:
-                theme_lis = post_theme.split('#')
-                for theme_name in theme_lis:
-                    if not theme_name or theme_name == ' ' :
-                        continue
-                    SThemePost.update_theme_post_by_theme_name(theme_name, post.id, post_image=post.post_image,post_image_meta = post.post_image_meta)
-            RPost.update_most_recent_post(post.id,post.post_image_meta)
-            #=======================
+            post = Post.create_post(**kwargs)
             return post.canonical()
         except Exception as e:
             print('insert failed:%s' % str(e))
             return None
+
+    @classmethod
+    def update_post(cls, **kwargs):
+        """
+        Update post property base on the argument post_id
+        """
+        try:
+            post_id = kwargs.pop('post_id')
+            post = Post.get_one_post(post_id)
+            if post and post.user_id == int(kwargs.pop('user_id')):
+                for key, value in kwargs.items():
+                    setattr(post, key, value)
+                post.save()
+                return post.canonical()
+            else:
+                raise Exception("No exist Post:post_id: %s" %post_id)
+        except Exception as e:
+            print(e)
+            return 0
+
+    @classmethod
+    def delete_post(cls, post_id, user_id):
+        post = Post.objects.get(post_id=post_id)
+        if post is None:
+            raise Exception(u'post_id is not exist')
+        if user_id != post.user_id:
+            raise Exception(u'not your post')
+        post.post_status = 1
+        post.save()
+        return
+
+
+

@@ -52,7 +52,7 @@ class Post(models.Model):
         fields['create_time'] = time
         return fields
 
-    def create_one_post(self, *args, **kwargs):
+    def create_post(self, *args, **kwargs):
         if not self.create_time:
             self.create_time = datetime.datetime.utcnow().replace(tzinfo=utc)
         self.update_time = datetime.datetime.utcnow().replace(tzinfo=utc)

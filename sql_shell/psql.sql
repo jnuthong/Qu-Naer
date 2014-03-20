@@ -52,7 +52,27 @@ CREATE TABLE rdb_book(
 	"alt_title" varchar(128),
 	"sub_title" varchar(128),
 	"book_image" varchar(32),
+	"book_introduction" text,
+	"book_recommended_text" text,
+	"book_status" smallint,
  	);
+
+DROP TABLE IF EXISTS "rdb_author"
+CREATE TABLE rdb_author(
+	"id" bigserial primary key,
+	"name" varchar(128),
+	"origin_name" varchar(128),
+	"introduction" text,
+	"author_status" smallint,
+	)
+
+DROP TABLE IF EXISTS "rdb_publisher"
+CREATE TABLE rdb_publisher(
+	"id" bigserial primary key,
+	"name" varchar(128),
+	"origin_name" varchar(128),
+	"publisher_status" smallint,
+	)
 
 
 

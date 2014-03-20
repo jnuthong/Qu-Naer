@@ -14,6 +14,9 @@ class Book(models.Model):
     alt_title = models.CharField(max_length=128, blank=True, null=True)
     sub_title = models.CharField(max_length=128, blank=True, null=True)
     book_image = models.CharField(max_length=32, blank=True, null=True)
+    book_introduction = models.TextField(blank=True, null=True)
+    book_recommended_text = models.TextField(blank=True, null=True)
+    book_status = models.SmallIntegerField(blank=True, null=True)
 
     class Meta:
         managed = True
@@ -26,7 +29,8 @@ class Author(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=128, blank=True, null=True)
     origin_name = models.CharField(max_length=128, blank=True, null=True)
-    introduction = models.CharField(blank=True, null=True)
+    introduction = models.TextField(blank=True, null=True)
+    author_status = models.SmallIntegerField(blank=True, null=True)
 
     class Meta:
         managed = True
@@ -37,6 +41,7 @@ class Publisher(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=64, blank=True, null=True)
     origin_name = models.CharField(max_length=64, blank=True, null=True)
+    publisher_status = models.SmallIntegerField(blank=True, null=True)
 
     class Meta:
         managed = True
@@ -47,6 +52,7 @@ class BookAuthor(models.Model):
     id = models.AutoField(primary_key=True)
     book = models.BigIntegerField(blank=False, null=False)
     author = models.BigIntegerField(blank=False, null=False)
+    status = models.SmallIntegerField(blank=True, null=False)
 
     class Meta:
         managed = True
@@ -57,6 +63,7 @@ class BookPublisher(models.Model):
     id = models.AutoField(primary_key=True)
     book = models.BigIntegerField(blank=False, null=False)
     publisher = models.BigIntegerField(blank=False, null=False)
+    status = models.SmallIntegerField(blank=True, null=True)
 
     class Meta:
         managed = True

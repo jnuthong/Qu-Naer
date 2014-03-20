@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS "t_user_profile";
+DROP TABLE IF EXISTS "rdb_user_profile";
 CREATE TABLE t_user_profile(
 	"id" bigserial primary key,
 	"user_id" bigserial,

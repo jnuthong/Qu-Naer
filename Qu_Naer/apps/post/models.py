@@ -15,7 +15,7 @@ class Post(models.Model):
     user_id = models.BigIntegerField(blank=True, null=True)
     book_id = models.BigIntegerField(blank=True, null=True)
     place_id = models.BigIntegerField(blank=True, null=True)
-    post_content = models.CharField(blank=True, null=True)    # without compress
+    post_content = models.BinaryField(blank=True, null=True)    # without compress, todo: add compress content method
     post_image = models.CharField(max_length=32, blank=True)
     post_source = models.SmallIntegerField(blank=True, null=True)
     post_type = models.SmallIntegerField(blank=True, null=True)

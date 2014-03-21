@@ -14,5 +14,9 @@ class UserThird(models.Model):
     status = models.SmallIntegerField(max_length=2, null=True)
 
     class Meta:
-        managed = True
-        db_table = 't_user_third'
+        db_table = 'rdb_user_third'
+        index_together = [
+            ["third_key"],
+            ["access_token"],
+            ["user_id"],
+        ]

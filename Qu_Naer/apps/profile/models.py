@@ -30,21 +30,12 @@ class UserProfile(models.Model):
     third_type = models.SmallIntegerField(max_length=2, null=True)
 
     class Meta:
-        managed = True
-        db_table = 't_user_profile'
+        db_table = 'rdb_user_profile'
         index_together = [
             ["user_id"],
+            ["user_nick"],
+            ["user_email"],
         ]
-    def canonical(self):
-        doc = model_to_dict(self, fields=('user_id', 'user_name', 'user_nick', 'user_image', 'signature', 'realname',
-                                          'birth_year', 'birth_month', 'birth_day', 'province', 'city', 'district',
-                                          'sex'))
-        return doc
-
-    def canonical_normal(self):
-        doc = model_to_dict(self, fields=('user_id', 'user_name', 'user_nick', 'user_image', 'signature', 'province',
-            'city', 'district'))
-        return doc
 
     @classmethod
     def create_user_profile(cls, user_id, user_password, user_email, user_mobile, user_nick,

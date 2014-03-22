@@ -5,9 +5,6 @@ from django.contrib.auth.models import (
     UserManager,
     )
 
-
-# appname/models.py
-
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, AbstractUser, BaseUserManager
 from apps.user.manager import CustomeUserManager
@@ -22,7 +19,7 @@ class SUser(AbstractUser):
     objects = CustomeUserManager()
 
     class Meta:
-        db_table = 't_user_account'
+        db_table = 'rdb_user_account'
 
 
     def __init__(self, *args, **kwargs):

@@ -23,7 +23,7 @@ CREATE TABLE rdb_user_profile(
 	"district" varchar(512),
 	"signature" varchar(512),
 	"third_key" varchar(512),
-	"third_type" smallint
+	"third_type" smallint(2)
 );
 
 DROP TABLE IF EXISTS "rdb_post";
@@ -74,7 +74,19 @@ CREATE TABLE rdb_publisher(
 	"publisher_status" smallint,
 	)
 
+DROP TABLE IF EXISTS "rdb_user_account"
+CREATE TABLE rdb_user_account{
+	"id" bigserial primary key,
+	"mobilephone" varchar(128),
+	"full_name" varchar(128),
+	"short_name" varchar(128),
+	"third_key" varchar(128),
+	"third_type" smallint(4),
+	"objects" varchar(128),
+}
 
-
-
-
+DROP TABLE IF EXISTS "rdb_user_third"
+CREATE TABLE rdb_user_third{
+	"id" bigserial primary key,
+	"third_key" varchar(128),
+}

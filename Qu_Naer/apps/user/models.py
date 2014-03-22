@@ -11,6 +11,7 @@ from apps.user.manager import CustomeUserManager
 from utils.utils import *
 
 class SUser(AbstractUser):
+    id = models.AutoField(primary_key=True)
     mobilephone = models.CharField(null=True, db_index=True, max_length=128)
     full_name = models.CharField(null=True, max_length=128)
     short_name = models.CharField(null=True, max_length=128)
@@ -36,16 +37,16 @@ class SUser(AbstractUser):
         raise NotImplementedError
 
     @classmethod
-    def get_user_by_email(self, email):
+    def get_user_by_email(cls, email):
         try:
-            return self.objects.get(email=email)
+            return cls.objects.get(email=email)
         except Exception:
             return None
 
     @classmethod
-    def get_user_by_mobile_phone(self, mobilephone):
+    def get_user_by_mobile_phone(cls, mobilephone):
         try:
-            return self.objects.get(mobilephone=mobilephone)
+            return cls.objects.get(mobilephone=mobilephone)
         except Exception:
             return None
 

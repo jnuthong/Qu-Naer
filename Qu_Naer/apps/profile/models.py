@@ -56,11 +56,55 @@ class UserProfile(models.Model):
         user_profile.save()
 
     @classmethod
+    def create_user_profile(cls, **kwargs):
+        """
+        Create user profile by provided user_email, user_password, user_mobile, user_nick
+        REQUIREMENT PARAM:
+            - user_mobile/user_email, at least one param is required
+            - user_password
+            - user_nick
+            - register_ip
+            - sex
+            - province (this is important)
+            - city (important info)
+            - district (should be provided)
+        OPTIONAL PARAM:
+            - another param is optional
+        """
+        if 'user_mobile' in kwargs.keys(): user_mobile = kwargs.get('user_mobile')
+        else: user_mobile = None
+
+        if 'user_email' in kwargs.keys(): user_email = kwargs.get('user_email')
+        else: user_email = None
+
+        if user_mobile == None and user_email == None:
+            return dict(msg="Please provide user_mobile/user_email, at least one!")
+
+        if user_mobile != None:
+            user_obj = UserProfile(user_mobile=user_mobile,
+                                   user_password=kwargs.get('user_password'),
+                                   user_nick=kwargs.get('user_nick'),
+                                   register_ip=kwargs.get('register_ip'),
+                                   sex=kwargs.get('sex'),
+                                   province=kwargs.get('province'),
+                                   city=kwargs.get('city'),
+                                   district=kwargs.get('district'))
+            user_obj.save()
+        elif user_email != None:
+            user_obj = UserProfile(user_email=user_email,
+                                   user_password=kwargs.get('user_password'),
+                                   user_nick=kwargs.get('user_nick'),
+                                   register_ip=kwargs.get('register_ip'),
+                                   sex=kwargs.get('sex'),
+                                   province=kwargs.get('province'),
+                                   city=kwargs.get('city'),
+                                   district=kwargs.get('district'))
+
+    @classmethod
     def create_user_profile_by_third_user(cls, user_id, third_key, third_type):
-        user_profile = UserProfile()
-        user_profile.user_id = user_id
-        user_profile.third_key = third_key
-        user_profile.third_type = third_type
+        user_profile = UserProfile(user_id=user_id,
+                                   third_key=third_key,
+                                   third_type=third_type)
         user_profile.save()
         return user_profile
 
@@ -69,4 +113,4 @@ class UserProfile(models.Model):
         try:
             return UserProfile.objects.get(user_id=user_id)
         except Exception as e:
-            return None
+            return dict(msg="Error in get user_profile!")

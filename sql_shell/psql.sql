@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS "rdb_user_profile";
 CREATE TABLE rdb_user_profile(
 	"id" bigserial primary key,
-	"user_id" bigserial,
+	"user_id" bigint,
 	"user_password" varchar(32),
 	"user_email" varchar(256),
 	"user_mobile" varchar(32),
@@ -74,7 +74,20 @@ CREATE TABLE rdb_publisher(
 	"publisher_status" smallint,
 	)
 
+DROP TABLE IF EXISTS "rdb_book_author"
+CREATE TABLE rdb_book_author(
+	"id" bigserial primary key,
+	"book_id" bigint,
+	"author_id" bigint,
+	"status" smallint,
+	)
 
-
+DROP TABLE IF EXISTS "rdb_book_publisher"
+CREATE TABLE rdb_book_publisher(
+	"id" bigserial primary key,
+	"book_id" bigint,
+	"publisher_id" bigint,
+	"status" smallint,
+	)
 
 

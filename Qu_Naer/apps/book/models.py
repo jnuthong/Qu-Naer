@@ -22,7 +22,21 @@ class Book(models.Model):
         managed = True
         db_table = 'rdb_book'
 
+    def __str__(self):
+        return '%s, %s, %s, %s' % (self.id, self.isbn10, self.isbn13, self.title)
 
+    def create_book(self, *args, **kwargs):
+        super(Post, self).save(*args, **kwargs)
+        return self
+
+    def get_one_book(self, book_id):
+        return self.objects.get(id=book_id)
+
+    def update_book(self, book_id, **kwargs):
+        self.objects.filter(id=book_id).update(**kwargs)
+
+    def delete_post(self, book_id):
+        self.objects.filter(id=book_id).update(book_status=1)
 
 
 class Author(models.Model):
@@ -50,8 +64,8 @@ class Publisher(models.Model):
 
 class BookAuthor(models.Model):
     id = models.AutoField(primary_key=True)
-    book = models.BigIntegerField(blank=False, null=False)
-    author = models.BigIntegerField(blank=False, null=False)
+    book_id = models.BigIntegerField(blank=False, null=False)
+    author_id = models.BigIntegerField(blank=False, null=False)
     status = models.SmallIntegerField(blank=True, null=False)
 
     class Meta:
@@ -61,8 +75,8 @@ class BookAuthor(models.Model):
 
 class BookPublisher(models.Model):
     id = models.AutoField(primary_key=True)
-    book = models.BigIntegerField(blank=False, null=False)
-    publisher = models.BigIntegerField(blank=False, null=False)
+    book_id = models.BigIntegerField(blank=False, null=False)
+    publisher_id = models.BigIntegerField(blank=False, null=False)
     status = models.SmallIntegerField(blank=True, null=True)
 
     class Meta:

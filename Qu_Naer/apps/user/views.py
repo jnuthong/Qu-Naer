@@ -89,22 +89,24 @@ def register(request):
         city = request.POST['city']
         district = request.POST['district']
         sex = request.POST['sex']
+        if 'mobile_phone' in request.POST.keys(): mobile_phone = request.POST['mobile_phone']
+        else: mobile_phone = None
         if password1 != password2:
             return response_fail_to_mobile(500, '注册失败')
-        print('username:%s, password:%s' % (username, password1))
+        # print('username:%s, password:%s' % (username, password1))
         if is_email(username):
             if SUserLogic.get_user_by_email(email=username):
                 return response_fail_to_mobile(500, '注册失败,用户名已存在')
             logic = SUserLogic.create_user(username=username,
                                            email=username,
-                                           mobile_phone=None,
+                                           mobile_phone=mobile_phone,
                                            password=password1)
             if logic is None:
                 raise Exception('Create user fail')
             UserProfileLogic.create_user_profile(user_id=logic.id,
                                                  user_password=password1,
                                                  user_email=username,
-                                                 user_mobile=None,
+                                                 user_mobile=mobile_phone,
                                                  user_nick=nickname,
                                                  register_ip=None,
                                                  sex=sex,

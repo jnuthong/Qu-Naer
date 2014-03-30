@@ -3,7 +3,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from utils import json_functions as json
 import functools
-from utils.user_functions import generate_secret_hash_3072_sha1
+# from utils.user_functions import generate_secret_hash_3072_sha1
 
 def get_argument_or_404(request, param, method='REQUEST', code='404'):
     try:

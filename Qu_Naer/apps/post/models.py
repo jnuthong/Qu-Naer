@@ -9,7 +9,6 @@ from django.db import models
 from django.forms.models import model_to_dict
 from django.utils.timezone import utc
 
-
 class Post(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.BigIntegerField(blank=True, null=True)

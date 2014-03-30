@@ -26,6 +26,9 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
+ADMIN_LOGIN = 'admin@admin.com'
+ADMIN_PASSWORD = 'admin'
+
 ALLOWED_HOSTS = ['127.0.0.1']
 CSRF_COOKIE_DOMAIN = '127.0.0.1'
 
@@ -44,7 +47,6 @@ INSTALLED_APPS = (
     # our apps
     'mapi',
     'apps.profile',
-    'apps.user',
     'apps.user_third',
     # 'utils',
     # 'apps.comment',
@@ -53,8 +55,8 @@ INSTALLED_APPS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -65,7 +67,10 @@ ROOT_URLCONF = 'main.urls'
 
 WSGI_APPLICATION = 'main.wsgi.application'
 
-AUTH_USER_MODEL = 'apps.profile.UserProfile'
+# substitute custom user model
+# AUTH_USER_MODEL = 'apps.profile'
+# authentication backend
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', )
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
@@ -91,7 +96,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
 )
 
-AUTH_USER_MODEL = 'user.SUser'
+# AUTH_USER_MODEL = 'apps.profile.UserProfile'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/

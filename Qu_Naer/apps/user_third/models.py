@@ -2,7 +2,7 @@ from django.db import models
 
 class UserThird(models.Model):
     third_key = models.CharField(max_length=128, null=True)
-    user_id = models.BigIntegerField(null=True)
+    user_id = models.BigIntegerField(max_length=32, primary_key=True)
     access_token = models.CharField(max_length=128, null=True)
     refresh_token = models.CharField(max_length=256, null=True)
     expire_time = models.DateTimeField(null=True)

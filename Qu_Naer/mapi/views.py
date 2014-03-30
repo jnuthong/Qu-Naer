@@ -1,11 +1,11 @@
-
 from utils.user_functions import ajax_login_required
 from django.views.decorators.http import *
 from utils.json_functions import json_view
 from django.shortcuts import HttpResponse
 from apps.user_third import views as third_views
-from apps.user import views as user_views
+from apps.profile import views as profile_views
 from django.views.decorators.csrf import csrf_protect, csrf_exempt, ensure_csrf_cookie
+
 
 @require_POST
 @json_view
@@ -13,15 +13,22 @@ def login(request):
     """
     User login
     """
-    return user_views.login(request)
+    # return user_views.login(request)
+    pass
 
 @require_POST
 @json_view
-@csrf_protect
 def register(request):
     """
     """
-    return user_views.register(request)
+    return profile_views.register(request)
+
+@require_POST
+@json_view
+def nickname_check(request):
+    """
+    """
+    return profile_views.nickname_check(request)
 
 @require_POST
 @json_view
@@ -32,7 +39,8 @@ def logout(request):
     @param request:
     @return:
     """
-    return user_views.logout(request)
+    # return user_views.logout(request)
+    pass
 
 @require_POST
 @json_view
@@ -57,7 +65,8 @@ def update_user_info(request):
     @param request:
     @return:
     """
-    return user_views.update_user_info(request)
+    # return user_views.update_user_info(request)
+    pass
 
 @require_POST
 @json_view
@@ -91,10 +100,3 @@ def third_user_login(request):
     @return:
     """
     return third_views.third_user_login(request)
-
-@ensure_csrf_cookie
-def get_test_csrf(request):
-    """
-    Normal get test to get csrf token
-    """
-    return HttpResponse('Hello world')

@@ -3,7 +3,6 @@ from utils.utils import *
 from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
 from apps.profile.logic import UserProfileLogic
 from apps.user_third.logic import UserThirdLogic
-from apps.user.logic import SUserLogic
 from django.db import transaction
 from utils.logger import error
 
@@ -14,34 +13,35 @@ def check_third_user_is_exist(request):
     @param request: third_key, third_type
     @return: {exist_code:-1(未注册) 其他表示已经注册}
     """
-    if request.method == 'GET':
-        return response_fail_to_mobile(500, REQUEST_METHOD_ERROR)
-    try:
-        third_key = request.POST['third_key']
-        third_type = request.POST['third_type']
-
-        logic = UserThirdLogic.get_third_user_info(third_key=third_key, third_type=third_type)
-        if logic is not None:
-            return dict(code=1, exist_code=1, content='This User have been registered')
-        s_logic = SUserLogic.get_user_info_by_third(third_key=third_key, third_type=third_type)
-        if s_logic is not None:
-            raise Exception('The database table has it')
-
-        user_logic = SUserLogic.create_user_for_third(third_key=third_key, third_type=third_type)
-
-        UserProfileLogic.create_user_profile_by_third_user(user_id=user_logic.id, third_key=user_logic.third_key,
-                                                           third_type=user_logic.third_type)
-
-        UserThirdLogic.create_third_user(user_id=user_logic.id, third_key=user_logic.third_key,
-                                         third_type=user_logic.third_type)
-        return dict(code=1, exist_code=-1, content='用户未注册')
-    except Exception as e:
-        error(e)
-        transaction.rollback()
-        ret = response_fail_to_mobile(500, '检查第三方用户出错')
-    finally:
-        transaction.commit()
-    return ret
+    # if request.method == 'GET':
+    #     return response_fail_to_mobile(500, REQUEST_METHOD_ERROR)
+    # try:
+    #     third_key = request.POST['third_key']
+    #     third_type = request.POST['third_type']
+    #
+    #     logic = UserThirdLogic.get_third_user_info(third_key=third_key, third_type=third_type)
+    #     if logic is not None:
+    #         return dict(code=1, exist_code=1, content='This User have been registered')
+    #     s_logic = SUserLogic.get_user_info_by_third(third_key=third_key, third_type=third_type)
+    #     if s_logic is not None:
+    #         raise Exception('The database table has it')
+    #
+    #     user_logic = SUserLogic.create_user_for_third(third_key=third_key, third_type=third_type)
+    #
+    #     UserProfileLogic.create_user_profile_by_third_user(user_id=user_logic.id, third_key=user_logic.third_key,
+    #                                                        third_type=user_logic.third_type)
+    #
+    #     UserThirdLogic.create_third_user(user_id=user_logic.id, third_key=user_logic.third_key,
+    #                                      third_type=user_logic.third_type)
+    #     return dict(code=1, exist_code=-1, content='用户未注册')
+    # except Exception as e:
+    #     error(e)
+    #     transaction.rollback()
+    #     ret = response_fail_to_mobile(500, '检查第三方用户出错')
+    # finally:
+    #     transaction.commit()
+    # return ret
+    pass
 
 
 def update_third_user_info(request):

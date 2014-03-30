@@ -27,7 +27,7 @@ class Book(models.Model):
         return '%s, %s, %s, %s' % (self.id, self.isbn10, self.isbn13, self.title)
 
     def create_book(self, *args, **kwargs):
-        super(Post, self).save(*args, **kwargs)
+        super(Book, self).save(*args, **kwargs)
         return self
 
     def get_one_book(self, book_id):

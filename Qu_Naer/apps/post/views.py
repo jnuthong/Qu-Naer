@@ -19,11 +19,11 @@ def get_one_post(request):
             post_info = PostLogic.get_one_post(post_id=post_id)
             if post_info is None:
                 raise Exception(u'post_id not exist')
-            user_info = UserProfileLogic.get_compact_user_profile_by_user_id(user_id = int(post_info.get('user_id')))
+            user_info = UserProfileLogic.get_compact_user_profile_by_user_id(user_id=int(post_info.get('user_id')))
             user = dict(user=user_info)
             theme = get_themes_by_post_id(post_id=post_id)
             #rpcret['image_info'] = ImageLogic.fetch_image_info(post_id,file_id=post_info.get('post_image'))
-            rpcret['image_info'] = ImageLogic.fetch_image_info_by_meta_id(meta_id = post_info.get('post_image_meta'))
+            rpcret['image_info'] = ImageLogic.fetch_image_info_by_meta_id(meta_id=post_info.get('post_image_meta'))
             rpcret['like_num'] = SocialLogic.get_post_liker_num(int(post_id))
             rpcret['comment_num'] = CommentLogic.get_comments_count_from_post_id(int(post_id))
             rpcret['isLiked'] = like

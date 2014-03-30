@@ -3,6 +3,7 @@ __author__ = 'gong'
 __create_time__ = '19/03/2014'
 
 from django.db import models
+from apps.post.models import *
 
 
 class Book(models.Model):

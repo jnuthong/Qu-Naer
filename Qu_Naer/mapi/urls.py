@@ -18,4 +18,6 @@ urlpatterns = patterns('',
     url(r'^update_third_user_info', views.update_third_user_info, name='update third user info'),
     url(r'^third_user_login', views.third_user_login, name='third_user_login'),
 
+    # CSRF test
+    url(r'get_test', views.get_test_csrf, name="this is test for get crsf token"),
 )

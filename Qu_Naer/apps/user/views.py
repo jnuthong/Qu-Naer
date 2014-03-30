@@ -75,66 +75,6 @@ def update_user_info(request):
     except Exception as e:
         return response_fail_to_mobile(500, 'Fail in updating user info')
 
-
-@transaction.commit_manually
+@transaction.commit_on_success
 def register(request):
-    if request.method == 'GET':
-        return response_fail_to_mobile(500, REQUEST_METHOD_ERROR)
-    try:
-        username = request.POST['username']
-        password1 = request.POST['password1']
-        password2 = request.POST['password2']
-        nickname = request.POST['nickname']
-        province = request.POST['province']
-        city = request.POST['city']
-        district = request.POST['district']
-        sex = request.POST['sex']
-        if 'mobile_phone' in request.POST.keys(): mobile_phone = request.POST['mobile_phone']
-        else: mobile_phone = None
-        if password1 != password2:
-            return response_fail_to_mobile(500, '注册失败')
-        # print('username:%s, password:%s' % (username, password1))
-        if is_email(username):
-            if SUserLogic.get_user_by_email(email=username):
-                return response_fail_to_mobile(500, '注册失败,用户名已存在')
-            logic = SUserLogic.create_user(username=username,
-                                           email=username,
-                                           mobile_phone=mobile_phone,
-                                           password=password1)
-            if logic is None:
-                raise Exception('Create user fail')
-            UserProfileLogic.create_user_profile(user_id=logic.id,
-                                                 user_password=password1,
-                                                 user_email=username,
-                                                 user_mobile=mobile_phone,
-                                                 user_nick=nickname,
-                                                 register_ip=None,
-                                                 sex=sex,
-                                                 province=province,
-                                                 city=city,
-                                                 district=district)
-        elif is_mobile_phone(username):
-            if SUserLogic.get_user_by_mobile_phone(mobilephone=username):
-                return response_fail_to_mobile(500, 'Fail in registering, user name alread exist!')
-            logic = SUserLogic.create_user(username=username, email=None, mobile_phone=username, password=password1)
-            if logic is None :
-                raise Exception('Create user fail')
-            UserProfileLogic.create_user_profile(user_id=logic.id,
-                                                 user_password=password1,
-                                                 user_email=None,
-                                                 user_mobile=username,
-                                                 user_nick=nickname,
-                                                 register_ip=None,
-                                                 sex=sex,
-                                                 province=province,
-                                                 city=city,
-                                                 district=district)
-        else:
-            raise Exception('Request params error')
-        return response_success_to_mobile("Success in registering!")
-    except Exception as e:
-        ret = response_fail_to_mobile(500, "Fail in registering!")
-        transaction.rollback()
-    finally:
-        transaction.commit()
-    return ret
+    pass

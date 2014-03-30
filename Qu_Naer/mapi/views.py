@@ -2,9 +2,10 @@
 from utils.user_functions import ajax_login_required
 from django.views.decorators.http import *
 from utils.json_functions import json_view
-
+from django.shortcuts import HttpResponse
 from apps.user_third import views as third_views
 from apps.user import views as user_views
+from django.views.decorators.csrf import csrf_protect, csrf_exempt, ensure_csrf_cookie
 
 @require_POST
 @json_view
@@ -16,14 +17,9 @@ def login(request):
 
 @require_POST
 @json_view
+@csrf_protect
 def register(request):
-
     """
-    Register user
-    @param request:
-    @return:
-    # the following code is doctest for register(request) api #
-
     """
     return user_views.register(request)
 
@@ -95,3 +91,10 @@ def third_user_login(request):
     @return:
     """
     return third_views.third_user_login(request)
+
+@ensure_csrf_cookie
+def get_test_csrf(request):
+    """
+    Normal get test to get csrf token
+    """
+    return HttpResponse('Hello world')

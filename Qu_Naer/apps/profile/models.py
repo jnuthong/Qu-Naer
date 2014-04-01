@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.core import cache
 from utils.utils import *
 
+
 class UserProfile(models.Model):
     user_id = models.BigIntegerField(max_length=32, blank=True)
     user_password = models.CharField(max_length=32, null=True)

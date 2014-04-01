@@ -2,24 +2,31 @@ from django.db import models
 from django.forms.models import model_to_dict
 from django.utils import timezone
 from django.core import cache
+from django.contrib.auth.models import User
 from utils.utils import *
+import datetime
+from django.utils.timezone import utc
 
 
 class UserProfile(models.Model):
-    user_id = models.BigIntegerField(max_length=32, blank=True)
+    user_id = models.AutoField(max_length=32, primary_key=True, unique=True)
     user_password = models.CharField(max_length=32, null=True)
     user_email = models.CharField(max_length=256, null=True)
     user_mobile = models.CharField(max_length=32, null=True)
     user_name = models.CharField(max_length=128, null=True)
     user_nick = models.CharField(max_length=128, null=True)
     login_type = models.SmallIntegerField(blank=True, null=True)
-    register_time = models.DateTimeField(blank=True, null=True, auto_now_add=True)
+    register_time = models.DateTimeField(blank=True,
+                                         null=True,
+                                         auto_now_add=True)
     register_ip = models.CharField(max_length=20, null=True)
-    last_login_time = models.DateTimeField(blank=True, null=True)
+    last_login_time = models.DateTimeField(blank=True,
+                                           null=True,
+                                           default=datetime.datetime.utcnow().replace(tzinfo=utc))
     last_login_ip = models.CharField(max_length=20, null=True)
     user_image = models.CharField(max_length=32, null=True)
-    realname = models.CharField(max_length=32, null=True)
-    sex = models.SmallIntegerField(blank=True, null=True)
+    real_name = models.CharField(max_length=32, null=True)
+    sex = models.SmallIntegerField(blank=True, null=True) # 1-male; 0-female;
     birth_year = models.SmallIntegerField(blank=True, null=True)
     birth_month = models.SmallIntegerField(blank=True, null=True)
     birth_day = models.SmallIntegerField(blank=True, null=True)
@@ -37,24 +44,6 @@ class UserProfile(models.Model):
             ["user_nick"],
             ["user_email"],
         ]
-
-    @classmethod
-    def create_user_profile(cls, user_id, user_password, user_email, user_mobile, user_nick,
-                            register_ip, sex, province, city, district):
-        user_profile = UserProfile()
-        user_profile.user_id = user_id
-        user_profile.user_password = md5(user_password)
-        user_profile.user_email = user_email
-        user_profile.user_mobile = user_mobile
-        user_profile.user_name = user_nick
-        user_profile.user_nick = user_nick
-        user_profile.register_time = datetime_convert_current_timezone(timezone.now())
-        user_profile.register_ip = register_ip
-        user_profile.sex = sex
-        user_profile.province = province
-        user_profile.city = city
-        user_profile.district = district
-        user_profile.save()
 
     @classmethod
     def create_user_profile(cls, **kwargs):
@@ -89,8 +78,11 @@ class UserProfile(models.Model):
                                    sex=kwargs.get('sex'),
                                    province=kwargs.get('province'),
                                    city=kwargs.get('city'),
+                                   register_time=datetime.datetime.utcnow().replace(tzinfo=utc),
+                                   last_login_time=datetime.datetime.utcnow().replace(tzinfo=utc),
                                    district=kwargs.get('district'))
             user_obj.save()
+            return dict(msg="Success register with mobile phone number")
         elif user_email != None:
             user_obj = UserProfile(user_email=user_email,
                                    user_password=kwargs.get('user_password'),
@@ -99,7 +91,11 @@ class UserProfile(models.Model):
                                    sex=kwargs.get('sex'),
                                    province=kwargs.get('province'),
                                    city=kwargs.get('city'),
+                                   register_time=datetime.datetime.utcnow().replace(tzinfo=utc),
+                                   last_login_time=datetime.datetime.utcnow().replace(tzinfo=utc),
                                    district=kwargs.get('district'))
+            user_obj.save()
+            return dict(msg="Success register with email")
 
     @classmethod
     def create_user_profile_by_third_user(cls, user_id, third_key, third_type):
@@ -115,3 +111,33 @@ class UserProfile(models.Model):
             return UserProfile.objects.get(user_id=user_id)
         except Exception as e:
             return dict(msg="Error in get user_profile!")
+
+    @classmethod
+    def check_nickname(cls, user_nick):
+        """
+        """
+        try:
+            obj = UserProfile.objects.get(user_nick=user_nick)
+            return False # this nick name already exist
+        except Exception as e:
+            return True # this nick name is OK
+
+    @classmethod
+    def check_email(cls, user_email):
+        """
+        """
+        try:
+            obj = UserProfile.objects.get(user_email=user_email)
+            return False # this email already exist
+        except Exception as e:
+            return True # this email is OK
+
+    @classmethod
+    def check_mobile(cls, user_mobile):
+        """
+        """
+        try:
+            obj = UserProfile.objects.get(user_mobile=user_mobile)
+            return False # this user_mobile already exist
+        except Exception as e:
+            return True # this user_mobile is OK

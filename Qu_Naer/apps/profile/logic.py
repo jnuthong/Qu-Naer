@@ -1,7 +1,6 @@
 from apps.profile.models import UserProfile
 from utils.logger import error
 
-
 class UserProfileLogic(object):
 
     @classmethod
@@ -21,10 +20,29 @@ class UserProfileLogic(object):
             error(e)
 
     @classmethod
-    def create_user_profile(cls, user_id, user_password, user_email, user_mobile, user_nick,
+    def nickname_check(cls, user_nick):
+        """
+        REQUIRE_PARAM:
+            user_nick
+        return bool value, 0: you could use that, 1: ok, u can use
+        """
+        return UserProfile.check_nickname(user_nick)
+
+    @classmethod
+    def create_user_profile(cls, user_password, user_email, user_mobile, user_nick,
                             register_ip, sex, province, city, district):
+        """
+        - user_password
+        - user_email
+        - user_mobile
+        - user_nick (this is should be unique)
+        - register_ip
+        - sex
+        - province
+        - city
+        - district
+        """
         return UserProfile.create_user_profile(
-            user_id=user_id,
             user_password=user_password,
             user_email=user_email,
             user_mobile=user_mobile,

@@ -1,7 +1,6 @@
 DROP TABLE IF EXISTS "rdb_user_profile";
 CREATE TABLE rdb_user_profile(
-	id bigserial primary key,
-	user_id bigint,
+	user_id bigserial primary key,
 	user_password varchar(32),
 	user_email varchar(256),
 	user_mobile varchar(32),
@@ -88,17 +87,6 @@ CREATE TABLE rdb_book_publisher(
 	book_id bigint,
 	publisher_id bigint,
 	status smallint
-	);
-
-DROP TABLE IF EXISTS "rdb_user_account";
-CREATE TABLE rdb_user_account(
-	id bigserial primary key,
-	mobilephone varchar(128),
-	full_name varchar(128),
-	short_name varchar(128),
-	third_key varchar(128),
-	third_type smallint,
-	objects varchar(128)
 	);
 
 DROP TABLE IF EXISTS "rdb_user_third";

@@ -23,7 +23,7 @@ def is_mobile_phone(mobile_phone=None):
     return False
 
 def md5(in_str):
-    in_str = '%*4!#$;@$^*()(*&%$' + in_str + '%*4!#$;@$^*()(*&%$'
+    in_str = '$%^&*(±)9!@£/<>' + in_str + '$%^&*(±)9!@£/<>'
     m = hashlib.md5()
     m.update(in_str.encode('utf-8'))
     return m.hexdigest()

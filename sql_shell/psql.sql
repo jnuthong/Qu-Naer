@@ -31,7 +31,7 @@ CREATE TABLE rdb_post(
 	user_id bigint,
 	book_id bigint,
 	place_id bigint,
-	post_content bytea,
+	post_content text,
 	post_image varchar(32),
 	post_source smallint,
 	post_type smallint,

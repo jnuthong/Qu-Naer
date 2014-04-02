@@ -4,17 +4,17 @@ __create_time__ = '10/03/2014'
 
 
 import datetime
-#import zlib
 from django.db import models
 from django.forms.models import model_to_dict
 from django.utils.timezone import utc
+
 
 class Post(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.BigIntegerField(blank=True, null=True)
     book_id = models.BigIntegerField(blank=True, null=True)
     place_id = models.BigIntegerField(blank=True, null=True)
-    post_content = models.BinaryField(blank=True, null=True)    # without compress, todo: add compress content method
+    post_content = models.TextField(blank=True, null=True)
     post_image = models.CharField(max_length=32, blank=True)
     post_source = models.SmallIntegerField(blank=True, null=True)
     post_type = models.SmallIntegerField(blank=True, null=True)
@@ -43,7 +43,8 @@ class Post(models.Model):
         """
         trim post information for one post
         """
-        fields = model_to_dict(self, fields=('id', 'user_id', 'place_id', 'post_content', 'create_time','post_image','post_image_meta'))
+        fields = model_to_dict(self, fields=('id', 'user_id', 'place_id', 'post_content', 'create_time', 'post_image',
+                                             'post_image_meta'))
         post_id = fields.pop('id')
         fields['post_content'] = self.content
         fields['post_id'] = post_id

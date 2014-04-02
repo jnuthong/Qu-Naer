@@ -26,3 +26,6 @@ class Geography(models.Model):
     def get_geo_info(self, geo_id):
         return self.objects.get(id=geo_id)
 
+    def filter_by_city(self, city):
+        return self.objects.filter(city=city)
+

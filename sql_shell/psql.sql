@@ -94,3 +94,15 @@ CREATE TABLE rdb_user_third(
 	id bigserial primary key,
 	third_key varchar(128)
 	);
+
+DROP TABLE IF EXISTS "rdb_geography";
+CREATE TABLE rdb_geography(
+	id bigserial primary key,
+	city varchar(128),
+	longitude bigint,
+	latitude bigint,
+	status smallint
+	);
+
+
+

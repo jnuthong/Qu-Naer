@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang = "en">
+    <head>
+        <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+
+        <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+
+        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Raleway">
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js" type="text/javascript"></script>
+
+        <!-- mobile first -->
+        <!-- ref:http://getbootstrap.com/css/ -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <style>
+/*            body{
+                font: 16px  Helvetica, sans-serif;
+            }*/
+            tr{
+                line-height: 180px;
+                min-height: 180px;
+                height: 180px;
+            }
+            #LOGO {
+                font-family: 'Lobster', cursive;
+                /*font-family: 'Sigmar One', cursive;*/
+                font: 30px;
+                font-weight: 400;
+            }
+            #win{
+                line-height: 280px;
+                min-height: 280px;
+                height: 280px;
+            }
+            .table td{
+                padding: 0px;
+            _
+            .table tbody tr td{
+                border-top: 0px #cccccc;
+            }
+            .form-group{
+                line-height: 100%;
+            }
+            .form-inline{
+                line-height: 100%;
+            }
+            #main-win{
+                border: 10px #cccccc !important;
+            }
+            #form-tr{
+                height: 200%;
+                line-height: 200%;
+                min-height: 200%;
+            }
+            #textboxid
+            {
+                width: 300px;
+                height:200px;
+                font-size:14pt;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse" role="search">
+
+            <!-- Collection of nav links, forms, and other content for toggling -->
+            <div id="navbarCollapse" class="collapse navbar-collapse" style="display: inline;">
+                <ul class="nav navbar-nav" style="text-align: left; margin-left: 30px;">
+                    <li><a href="#" id="LOGO"><font size="26px" color="#0033CC">GPlat</font></a></li>
+                </ul>
+                    <form role="search" class="navbar-form navbar-left" style="text-align: center; margin-left: 28px; margin-top: 16px;">
+                        <div class="input-group" style="width: 400px;">
+                            <input type="text" placeholder="Search" class="form-control" style="width: 360px;">
+                            <div class="input-group-btn">
+                                <button class="btn btn-primary">
+                                <span class="glyphicon glyphicon-search" ></span>
+                            </div>
+                            </input>
+                        </div>
+                    </form>
+                <ul class="nav navbar-nav navbar-right" style="text-align: right; margin-right: 30px;">
+                    <li><a href="#"><h4>Login/SignUp</h4></a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <br>
+
+        <div class="container">
+            <div class="main-container col-xs-12 col-md-8">
+                .col-xs-12 .col-md-8
+                <div class="game-element">
+                    <img src="..." alt="..." class="img-rounged">
+                </div>
+            </div>
+
+            <div class="recommend-container col-xs-6 col-md-4">
+                .col-xs-12 .col-md-8
+            </div>
+        </div>
+
+        {%  block main_body %}
+        {%  endblock %}
+    </body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang = "en">
+    <head>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+
+        <!-- mobile first -->
+        <!-- ref:http://getbootstrap.com/css/ -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <style>
+            body{
+                font: 16px  Helvetica, sans-serif;
+            }
+            .first-layer{
+                line-height: 60px;
+                height: 60px;
+                min-height: 60px;
+            }
+            .alert{
+                margin-top: 18px;
+                font-size: 16px;
+                width: 300px;
+                height: 100%;
+                line-height: 100%;
+                min-height: 100%;
+                padding: 10px;
+            }
+        </style>
+        <script type="text/javascript">
+            var isEmailOK = false;
+            var isPasswordOK = false;
+            var isPasswordConfrimOK = false;
+            var isCityOK = false;
+
+            function validateEmail(email) {
+                var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+                return re.test(email);
+            };
+            function emailChecker(){
+                if(validateEmail(document.getElementById('EmailInput').value)==false){
+                    document.getElementById('emailInfo').style.visibility='visible';
+                    document.getElementById('emailInfo').innerHTML="Invilad Email!";
+                }else{
+                   if(isEmailOK==false){
+                       // this mean this email is not be check yet, for reduce the pressure from server side;
+                        document.getElementById('emailInfo').style.visibility='hidden';
+                        xml = new XMLHttpRequest();
+                        var path = "/validEmail/?user_email=".concat(document.getElementById('EmailInput').value);
+                        xml.open("GET", path,true);
+                        xml.send();
+                        xml.onreadystatechange = function(){
+                            if(xml.readyState==4){
+                                // alert(xml.responseText);
+                                if(xml.responseText!="True"){
+                                    // alert this email have been register or another problem occurs;
+                                    document.getElementById('emailInfo').style.visibility='visible';
+                                    document.getElementById('emailInfo').className="alert alert-danger";
+                                    document.getElementById('emailInfo').innerHTML="This Email have been registered!";
+                                }else{
+                                    // 1. stop checker email validation on the remote server;
+                                    // 2. show up info
+                                    // 3. set the cookies
+                                    isEmailOK=true;
+                                    document.getElementById('emailInfo').style.visibility='visible';
+                                    document.getElementById('emailInfo').innerHTML="This Email is Ok!";
+                                    document.getElementById('emailInfo').className="alert alert-success";
+                                    // test
+{#                                  var header = xml.getAllResponseHeaders().toLowerCase();#}
+{#                                  alert(header);#}
+                                }
+                            }
+                        }
+                   }
+                }
+            };
+
+            function cityChecker(){
+                document.getElementById('cityInfo').style.visibility='visible';
+                if(document.getElementById('CityName').value.length==0){
+                    document.getElementById('cityInfo').innerHTML="City couldn't be empty!";
+                }else{
+                    document.getElementById('cityInfo').innerHTML="City is OK!";
+                    document.getElementById('cityInfo').className="alert alert-success";
+                    isCityOK=true;
+                }
+            };
+
+            function passwordFormatValidator(){
+                var decimal =  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+                document.getElementById('passwordInfo').style.visibility='visible';
+                if(document.getElementById('PasswordInput').value.match(decimal)!=null){
+                    document.getElementById('passwordInfo').innerHTML="Password is OK!";
+                    document.getElementById('passwordInfo').className="alert alert-success";
+                }else{
+
+                    document.getElementById('passwordInfo').innerHTML="Password should contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character(8-15 characters)";
+                    document.getElementById('passwordInfo').className="alert alert-danger";
+                    isPasswordOK = true;
+                    //console.log(document.getElementById('PasswordInput').value);
+                }
+
+            };
+
+            function passwordConfirm(){
+
+                if(document.getElementById('PasswordInput').value!=document.getElementById('PasswordInput2').value){
+                    document.getElementById('confirmPasswordInfo').style.visibility='visible';
+                    document.getElementById('confirmPasswordInfo').innerHTML="Password is not same!";
+                }else{
+                    document.getElementById('confirmPasswordInfo').style.visibility='visible';
+                    document.getElementById('confirmPasswordInfo').innerHTML="This is OK!";
+                    document.getElementById('confirmPasswordInfo').className="alert alert-success";
+                    isPasswordConfrimOK = true;
+                }
+            };
+
+            function formChecker(){
+                ;
+            };
+        </script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="table-responsive">
+                <table>
+
+                    <tbody>
+                        <tr class="first-layer">
+                        </tr>
+                        <tr>
+                            <td style="width: 30px;">
+                            </td>
+                            <td>
+                                <div class="container" style="padding: 30px;
+                                                            border: 2px solid #cccccc;
+                                                            border-radius: 20px; width: 120%">
+                                    {%  block Inner_Block%}
+                                    <form action="/mapi/register" method="post" accept-charset="utf-8">
+                                        {% csrf_token %}
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <h4 style="float: right; padding-right: 20px;">Email/邮箱 : </h4>
+                                                </td>
+                                                <td>
+                                                    <input onmouseout="emailChecker()" style="margin-left: 20px;" type="email" class="form-control" name="user_email" id="EmailInput" placeholder="email@example.com"/>
+                                                </td>
+                                                <td style="float: right;padding-left: 30px;height: 100%;line-height: 100%">
+                                                    <p style="visibility: hidden;" id="emailInfo" class="alert alert-danger"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <h4 style="float: right; padding-right: 20px;">City/城市 : </h4>
+                                                </td>
+                                                <td>
+                                                    <input onmouseout="cityChecker()" style="margin-left: 20px;" class="form-control" name="city_name" id="CityName" placeholder="Beijing"/>
+                                                </td>
+                                                <td style="float: right;padding-left: 30px;height: 100%;line-height: 100%">
+                                                    <p style="visibility: hidden" id="cityInfo" class="alert alert-danger"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <h4 style="float: right; padding-right: 20px;">Gender/性别 : </h4>
+                                                </td>
+                                                <td>
+                                                    <select class="form-control" style="margin-left: 20px;padding-left: 20px;" name="gender" id="genderSelector">
+                                                        <option> None </option>
+                                                        <option> 女/Female </option>
+                                                        <option> 男/Male </option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <h4 style="float: right; padding-right: 20px;">Password : </h4>
+                                                </td>
+                                                <td>
+                                                    <input onmouseout="passwordFormatValidator()" style="margin-left: 20px;" name="user_password" type="password" class="form-control" id="PasswordInput">
+                                                </td>
+                                                <td style="float: right;padding-left: 30px;height: 100%;line-height: 100%">
+                                                    <p style="visibility: hidden" id="passwordInfo" class="alert alert-danger"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <h4 style="float: right; padding-right: 20px;">Confirm Password : </h4>
+                                                </td>
+                                                <td>
+                                                    <input onmouseout="passwordConfirm()" style="margin-left: 20px;" type="password" name="user_confirm_password" class="form-control" id="PasswordInput2">
+                                                </td>
+                                                <td style="float: right;padding-left: 30px;height: 100%;line-height: 100%">
+                                                    <p style="visibility: hidden" id="confirmPasswordInfo" class="alert alert-danger">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="align-content: center; text-align: right; padding-top: 30px;">
+                                                    <button type="Submit" class="btn btn-primary btn-sm" style="padding-left: 30px; padding-right: 30px;">Submit</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </form>
+                                    {% endblock %}
+                                </div>
+                            </td>
+                            <td style="width: 30px;">
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

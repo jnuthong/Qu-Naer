@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from apps.profile.models import UserProfile
 from utils.logger import error
 
@@ -6,6 +7,21 @@ class UserProfileLogic(object):
     @classmethod
     def get_user_profile_by_user_id(cls, user_id):
         return UserProfile.get_user_profile_by_user_id(user_id=user_id)
+
+    @classmethod
+    def email_valid_checker_f(cls, email):
+        """
+        """
+        if email is None: return False
+        return UserProfile.check_email(email)
+
+    @classmethod
+    def active_account_f(cls, user_email, valid_code):
+        """
+        """
+        if user_email is None or valid_code is None: return dict(msg="Error in function profile::logic::active_account_f(), either user_email or valid_code is none")
+        return UserProfile.active_account_m(user_email=user_email,
+                                            valid_code=valid_code)
 
     @classmethod
     def get_comments_by_user_id(cls, user_id):
@@ -29,30 +45,15 @@ class UserProfileLogic(object):
         return UserProfile.check_nickname(user_nick)
 
     @classmethod
-    def create_user_profile(cls, user_password, user_email, user_mobile, user_nick,
-                            register_ip, sex, province, city, district):
+    def create_user_profile(cls, user_email, city_name, gender, register_ip, password):
         """
-        - user_password
-        - user_email
-        - user_mobile
-        - user_nick (this is should be unique)
-        - register_ip
-        - sex
-        - province
-        - city
-        - district
         """
         return UserProfile.create_user_profile(
-            user_password=user_password,
             user_email=user_email,
-            user_mobile=user_mobile,
-            user_nick=user_nick,
-            register_ip=register_ip,
-            sex=sex,
-            province=province,
-            city=city,
-            district=district
-        )
+            city_name=city_name,
+            gender=gender,
+            password=password,
+            register_ip=register_ip)
 
     @classmethod
     def create_user_profile_by_third_user(cls, user_id, third_key, third_type):

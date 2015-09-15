@@ -43,7 +43,7 @@ def is_true(value):
     if value == 1:
         return True
     return bool(value) and isinstance(value, str) and value.lower() not in ('false', '0')
-    
+
 class required_params(object):
     "Instances of this class can be used as decorators"
     

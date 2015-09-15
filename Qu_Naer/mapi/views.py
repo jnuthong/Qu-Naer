@@ -1,23 +1,35 @@
 from utils.user_functions import ajax_login_required
 from django.views.decorators.http import *
-from utils.json_functions import json_view
-from django.shortcuts import HttpResponse
+from utils.json_functions import json_view, http_json_wraper, info_wraper
 from apps.user_third import views as third_views
 from apps.profile import views as profile_views
-from django.views.decorators.csrf import csrf_protect, csrf_exempt, ensure_csrf_cookie
+# from django.template.context_processors import csrf
+from django.views.decorators.csrf import csrf_protect, csrf_exempt, ensure_csrf_cookie, requires_csrf_token
 
+@ensure_csrf_cookie
+@requires_csrf_token
+@http_json_wraper
+def validEmail(request):
+    """
+    """
+    return profile_views.validEmail(request)
+
+@http_json_wraper
+def active_account(request):
+    """
+    """
+    return profile_views.activeAccount(request)
+
+@ensure_csrf_cookie
+def signup(request):
+    """
+    User sign up
+    """
+    return profile_views.signup(request)
 
 @require_POST
-@json_view
-def login(request):
-    """
-    User login
-    """
-    # return user_views.login(request)
-    pass
-
-@require_POST
-@json_view
+@requires_csrf_token
+@info_wraper
 def register(request):
     """
     """

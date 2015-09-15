@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-ROOT_PATH = os.path.join(os.path.dirname(__file__), '..')
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
@@ -28,40 +26,19 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-DEFAULT_CHARSET = "utf-8"
-
-EMAIL_SENDER = "my@emial.com"
-SITE_NAME = "mysite"
-SITE_ADDRESS = "mysite"
 ADMIN_LOGIN = 'admin@admin.com'
 ADMIN_PASSWORD = 'admin'
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['0.0.0.0']
 CSRF_COOKIE_DOMAIN = '127.0.0.1'
 
 # Application definition
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
-                # list if you haven't customized them:
-                'django.contrib.auth.context_processors.auth',
-                'django.template.context_processors.debug',
-                'django.template.context_processors.i18n',
-                'django.template.context_processors.media',
-                'django.template.context_processors.static',
-                'django.template.context_processors.tz',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
     },
 ]
-
-# TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -72,9 +49,6 @@ INSTALLED_APPS = (
     'django_extensions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # personal blog
-    'j_blog',
 
     # our apps
     'mapi',
@@ -88,13 +62,11 @@ INSTALLED_APPS = (
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
 )
 
 ROOT_URLCONF = 'main.urls'
@@ -110,21 +82,15 @@ AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', )
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 #################### Database setting ####################
 
-# mysqld restart
-# configure the character set in file /etc/mysql/my.cnf
-# log file /var/log/mysql/error.log
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': "soton_second_hand",
-        'HOST': "127.0.0.1",
+        'HOST': "rdsyyg623ww3uxxsudeu0.mysql.rds.aliyuncs.com",
         'PORT': "3306",
-        # 'PORT': "11111",
-        'USER': "root",
-        'PASSWORD': "vagrant",
-    },
-    'OPTIONS': { 'init_command': 'SET storage_engine=INNODB; SET names "utf8"' }
+        'USER': "soton",
+        'PASSWORD': "slk_wW12i34-234kwJK",
+    }
 }
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -142,7 +108,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-# LANGUAGE_CODE = 'zh-hans'
 
 TIME_ZONE = 'Asia/Shanghai'
 
@@ -152,60 +117,57 @@ USE_L10N = True
 
 USE_TZ = True
 
-# CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-STATIC_URL = '/statics/'
-STATICFILES_DIRS = (
-      BASE_DIR + "/statics/",
-)
+STATIC_URL = '/static/'
 #################### Caches settings ####################
 # import redis_cache
-import redis
+# import redis
 
-REDIS_CACHE_POOL = {
-   'host': '127.0.0.1',
-   'port': 6379,
-   'db': 1,
-   'desc': 'default pool for django'
-}
+# REDIS_CACHE_POOL = {
+#    'host': '127.0.0.1',
+#    'port': 6379,
+#    'db': 1,
+#    'desc': 'default pool for django'
+# }
 
-REDIS_USER_POOL = {
-   'host': '127.0.0.1',
-   'port': 6379,
-   'db': 2,
-   'desc': 'default pool for user'
-}
+# REDIS_USER_POOL = {
+#    'host': '127.0.0.1',
+#    'port': 6379,
+#    'db': 2,
+#    'desc': 'default pool for user'
+# }
 
-default_cache_location = '%s:%d:%s' % (REDIS_CACHE_POOL['host'], REDIS_CACHE_POOL['port'],REDIS_CACHE_POOL['db'])
-user_cache_location = '%s:%d:%s' % (REDIS_USER_POOL['host'], REDIS_USER_POOL['port'],REDIS_USER_POOL['db'])
+# REDIS_CACHE_POOL = redis.ConnectionPool(host=REDIS_CACHE_POOL['host'],
+#                                        port=REDIS_CACHE_POOL['port'],
+#                                        db=REDIS_CACHE_POOL['db'])
+#
+# REDIS_USER_POOL = redis.ConnectionPool(host=REDIS_USER_POOL['host'],
+#                                        port=REDIS_USER_POOL['port'],
+#                                        db=REDIS_USER_POOL['db'])
 
-REDIS_CACHE_POOL = redis.ConnectionPool(host=REDIS_CACHE_POOL['host'],
-                                       port=REDIS_CACHE_POOL['port'],
-                                       db=REDIS_CACHE_POOL['db'])
+# default_cache_location = '%s:%d:%s' % (REDIS_CACHE_POOL['host'], REDIS_CACHE_POOL['port'],REDIS_CACHE_POOL['db'])
+# user_cache_location = '%s:%d:%s' % (REDIS_USER_POOL['host'], REDIS_USER_POOL['port'],REDIS_USER_POOL['db'])
 
-REDIS_USER_POOL = redis.ConnectionPool(host=REDIS_USER_POOL['host'],
-                                       port=REDIS_USER_POOL['port'],
-                                       db=REDIS_USER_POOL['db'])
-
-CACHES = {
-           'default': {
-               'BACKEND': 'redis_cache.cache.RedisCache',
-               'LOCATION': default_cache_location,
-               'TIMEOUT': 60 * 10,
-           },
-           'user_info_cache': {
-               'BACKEND': 'redis_cache.cache.RedisCache',
-               'LOCATION': user_cache_location,
-               'TIMEOUT': 60 * 60 * 24 * 10,
-           },
-}
+# CACHES = {
+#            'default': {
+#                'BACKEND': 'redis_cache.cache.RedisCache',
+#                'LOCATION': default_cache_location,
+#                'TIMEOUT': 60 * 10,
+#            },
+#            'user_info_cache': {
+#                'BACKEND': 'redis_cache.cache.RedisCache',
+#                'LOCATION': user_cache_location,
+#                'TIMEOUT': 60 * 60 * 24 * 10,
+#            },
+# }
 
 # ===========
 # = Session =
 # ===========
-# SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
-SESSION_ENGINE = 'redis_sessions.session'
+# SESSION_ENGINE = 'redis_sessions.session'
 SITE_ID = 1

@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang = "en">
+    <head>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+        <!-- mobile first -->
+        <!-- ref:http://getbootstrap.com/css/ -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <style>
+            body{
+                font: 16px  Helvetica, sans-serif;
+            }
+            tr{
+                line-height: 180px;
+                min-height: 180px;
+                height: 180px;
+            }
+            #win{
+                line-height: 280px;
+                min-height: 280px;
+                height: 280px;
+            }
+            .table td{
+                padding: 0px;
+            }
+            .table tbody tr td{
+                border-top: 0px #cccccc;
+            }
+            .form-group{
+                line-height: 100%;
+            }
+            .form-inline{
+                line-height: 100%;
+            }
+            #main-win{
+                border: 10px #cccccc !important;
+            }
+            #form-tr{
+                height: 200%;
+                line-height: 200%;
+                min-height: 200%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container-fluid">
+
+            <div class="table-responsive">
+                <table class="table" style="text-align:center;border-top: none">
+                    <tr>
+                        <td class="col-xs-6 col-sm-4"></td>
+                        <td class="col-xs-6 col-sm-4"></td>
+                        <td class="col-xs-6 col-sm-4"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-xs-6 col-sm-4" id="win"></td>
+                        <td class="col-xs-6 col-sm-4" id="win" style="padding-left: 0px;padding-right: 0px;">
+                            <div class="container" style="padding: 0px;
+                                                            border: 2px solid #cccccc;
+                                                            border-radius: 20px; width: 100%">
+                                <h3>Welcome Home !</h3>
+                                <form style="padding-top: 15px">
+
+                                    <table style="line-height: 100%">
+
+                                    <tr id="form-tr">
+                                        <td style="padding-left: 30px; float: right;text-align: center; vertical-align: middle;padding-top: 8px">
+                                            <label> Email/Phone : </label>
+                                        </td>
+                                        <td style="align-content: right;padding-left: 10px">
+                                            <input type="text" class="form-control" in="EmailOrPhone" placeholder="example@example.com">
+                                        </td>
+                                    </tr>
+
+                                    <tr id="form-tr">
+                                        <td style="padding-left: 30px; float: right;text-align: center; vertical-align: middle;padding-top: 8px">
+                                            <label> Password : </label>
+                                        </td>
+                                        <td style="align-content: right;padding-left: 10px">
+                                            <input type="password" class="form-control" placeholder="Password">
+                                        </td>
+                                    </tr>
+
+                                    <tr id="form-tr">
+                                        <td colspan="2" style="float: center;text-align: center; padding-top: 20px; padding-bottom: 20px">
+                                            <a href="/signup/" style="float: left; padding-left: 50px">Sign Up?</a> or
+                                            <button type="submit" class="btn btn-primary" style="float: right;padding-left: 20px; padding-right: 20px"> Submit </button>
+                                        </td>
+                                    </tr>
+
+                                    </table>
+                                </form>
+
+                            </div>
+                        </td>
+                        <td class="col-xs-6 col-sm-4" id="win"></td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </body>
+</html>

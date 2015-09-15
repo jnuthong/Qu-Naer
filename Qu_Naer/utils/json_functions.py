@@ -1,4 +1,4 @@
-
+# -*- encoding: utf-8 -*-
 from django.db import models
 from django.utils.functional import Promise
 #from django.utils import simplejson as json
@@ -13,7 +13,7 @@ from mongoengine.queryset.queryset import QuerySet as MongoQuerySet
 from bson.objectid import ObjectId
 import sys
 import datetime
-
+from django.shortcuts import render
 
 def decode(data):
     if not data:
@@ -117,6 +117,49 @@ def json_view(func):
     else:
         return wrap
 
+def info_wraper(func):
+    """
+    """
+    def wrap(request, *a, **kw):
+        response = func(request, *a, **kw)
+        if isinstance(response, dict):
+            if 'result' in response and \
+                'msg' in response and \
+                'msg_cn' in response and \
+                response['result']=="OK":
+                return render(request, 'info_temp.html', dict(http_result_en=response['msg'],
+                                                              http_result_cn=response['msg_cn'],
+                                                              alert_class="alert alert-success"))
+            if 'warn' in response and \
+                'msg' in response and \
+                response['warn']=="OK":
+                return render(request, 'info_temp.html', dict(http_result_en=response['msg'],
+                                                              http_result_cn="出现错误!",
+                                                              alert_class="alert alert-warning"))
+            if 'danger' in response and \
+                'msg' in response and \
+                response['danger']=="OK":
+                return render(request, 'info_temp.html', dict(http_result_en=response['msg'],
+                                                              http_result_cn="出现异常!",
+                                                              alert_class="alert alert-danger"))
+        print response
+        return render(request, 'info_temp.html', dict(http_result_en="This is default msg, please contact adminstrator!",
+                                                      http_result_cn="默认信息!",
+                                                      alert_class="alert alert-info"))
+    return wrap
+
+def http_json_wraper(func):
+    """
+    return the pure text as httpResponse
+    """
+    def wrap(request, *a, **kw):
+        response = func(request, *a, **kw)
+        return render(request, 'json_text.html', dict(http_result=response))
+
+    if isinstance(func, HttpResponse):
+        return func
+    else:
+        return wrap
 
 def json_response(request, response=None):
     code = 200
@@ -162,8 +205,9 @@ def json_response(request, response=None):
     json = json_encode(response)
     return HttpResponse(json, content_type='application/json', status=code)
 
-
 def main():
+    reload(sys)
+    # sys.setdefaultencoding("utf-8")
     test = {1: True, 2: u"string", 3: 30}
     json_test = json_encode(test)
     print(test, json_test)

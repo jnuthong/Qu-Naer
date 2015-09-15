@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from utils.json_functions import json_view
 from utils.utils import *
 from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
@@ -6,7 +7,7 @@ from apps.user_third.logic import UserThirdLogic
 from django.db import transaction
 from utils.logger import error
 
-@transaction.commit_manually
+# @transaction.commit_manually
 def check_third_user_is_exist(request):
     """
     Checked if the third user exist

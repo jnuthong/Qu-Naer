@@ -1,0 +1,37 @@
+{% extends "j_blog/home_template.html" %}
+
+{% block main_body %}
+    <table></table>
+    <table class="col-xs-12 col-sm-6 col-md-8">
+        <tbody>
+            <tr>
+                <td style="text-align: center"><h3>{{ title }}</h3></td>
+            </tr>
+            <tr>
+                <td style="text-align: right"><h4>Author: {{ author }}</h4></td>
+            </tr>
+            <tr>
+                <td style="text-align: right"><h4>Date: {{ create_date }}</h4></td>
+            </tr>
+            <tr>
+                <td style="text-align: center">
+                    {{ content }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="col-xs-6 col-sm-2 col-md-3" style="margin-left: 50px;margin-top: 150px;">
+        <tbody>
+            <tr style="border-left: 1px solid black;">
+                <td style="text-align: center"><h4> Index by time </h4></td>
+            </tr>
+            <tr style="border-left: 1px solid black;">
+                <td style="text-align: center"><h4> Index by topic </h4></td>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center"><h4>Ad</h4></td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

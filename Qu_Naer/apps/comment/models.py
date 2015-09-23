@@ -1,6 +1,7 @@
-# -*- coding: utf-8 -*-
-# Author: J Hong
-# Date: 15/04/2013
+#!/usr/bin/env python
+#!-*-coding:utf-8-*-
+__author__ = 'gong'
+__create_time__ = '22/09/2015'
 
 from django.db import models
 from django.forms.models import model_to_dict
@@ -9,7 +10,8 @@ import datetime
 
 Comment_Length = 3000
 
-class MComment(models.Model):
+
+class Comment(models.Model):
     """
     Comment have foreign key for some specify post
     """
@@ -54,7 +56,6 @@ class MComment(models.Model):
             self.comment_content = kwargs.get('comment_content')
         self.save()
         return self
-
 
     def read_by_comment_id(self, *arg, **kwargs):
         """

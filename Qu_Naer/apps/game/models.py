@@ -32,7 +32,7 @@ class Game(models.Model):
         managed = True
 
     def __str__(self):
-        return '%s, %s, %s, %s' % (self.game_id, self.game_name, self.game_status, game_audit)
+        return '%s, %s, %s, %s' % (self.game_id, self.game_name, self.game_status, self.game_audit)
 
     def canonical(self):
         """

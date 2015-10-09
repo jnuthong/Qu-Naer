@@ -15,17 +15,25 @@ class GameLogic(object):
     @classmethod
     def get_game_list(cls, page_num):
         try:
+            print "logic begin:"
+            if(page_num<1):
+                raise Exception(u'FUCK!PAGENUM<1!')
             game_id_list = Game.get_game_list(page_num)
+            print game_id_list
             game_dict_list = []
             if len(game_id_list) > 0:
-                for game_id in game_list:
-                    game_dict_list.append(get_one_game(game_id).canonical_trim_game())
+                for game_id in game_id_list:
+                    game_dict_list.append(Game.get_one_game(game_id).canonical_trim_game())
                 return game_dict_list
             else:
                 return []
         except Exception as e:
-            error(e)
+            print e
             return []
+
+    @classmethod
+    def get_total_num(cls):
+        return Game.get_total_num()
 
     @classmethod
     def create_game(cls, **kwargs):

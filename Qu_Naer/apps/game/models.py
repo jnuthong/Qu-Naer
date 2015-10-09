@@ -17,7 +17,7 @@ class Game(models.Model):
     initial_name = models.CharField(max_length=64, blank=True)
     developer_id = models.BigIntegerField(blank=True, null=True)
     publisher_id = models.BigIntegerField(blank=True, null=True)
-    cover_image = models.CharField(max_length=32, blank=True)
+    cover_image = models.CharField(max_length=128, blank=True)
     release_date = models.DateTimeField(blank=True, null=True)
     game_language = models.CharField(max_length=64, blank=True)
     game_brief = models.TextField(blank=True, null=True)
@@ -32,7 +32,7 @@ class Game(models.Model):
         managed = True
 
     def __str__(self):
-        return '%s, %s, %s, %s' % (self.game_id, self.game_name, self.game_status, self.game_audit)
+        return '%s, %s, %s, %s' % (self.game_id, self.game_name, self.game_status, game_audit)
 
     def canonical(self):
         """
@@ -50,27 +50,35 @@ class Game(models.Model):
         fields = model_to_dict(self, fields=('game_id', 'game_name', 'initial_name', 'cover_image'))
         return fields
 
-    def create_game(self, *args, **kwargs):
-        self.game_status = '0'
-        self.game_audit = '0'
-        super(Game, self).save(*args, **kwargs)
-        return self
+    @classmethod
+    def create_game(cls, *args, **kwargs):
+        cls.game_status = '0'
+        cls.game_audit = '0'
+        super(Game, cls).save(*args, **kwargs)
+        return cls
 
-    def get_one_game(self, game_id):
-        return self.objects.get(game_id=game_id)
-
-    def get_game_list(self, page_num):
+    @classmethod
+    def get_one_game(cls, game_id):
+        return cls.objects.get(game_id=game_id)
+    
+    @classmethod
+    def get_game_list(cls, page_num):
         offset = (page_num-1)*9
-        limit = 9
+        limit = offset + 9
         ret = []
-        queryset = self.objects.exclude(game_status='1')[offset,limit]
-        for game in queryset:
+        qs = []
+        try:
+            qs = cls.objects.all()[offset:limit]
+        except Exception as e:
+            print('get_game_list error : %s' % str(e))
+        for game in qs:
             ret.append(game.game_id)
         return ret
 
-    def get_total_num(self):
-        total = self.objects.count()
-        return total
+    @classmethod
+    def get_total_num(cls):
+        total = cls.objects.count()
+        return total/9
 
     def update_game(self, game_id, **kwargs):
         self.objects.filter(game_id=game_id).update(**kwargs)
@@ -115,6 +123,7 @@ class Type(models.Model):
     def get_type(self, **kwargs):
         return self.objects.get(type_id = kwargs.get('type_id'))
 
+
 class GameType(models.Model):
     game_id = models.BigIntegerField(blank=True, null=True)
     type_id = models.BigIntegerField(blank=True, null=True)
@@ -135,6 +144,7 @@ class GameType(models.Model):
     def get_games_by_type(self, type_id):
         return self.objects.filter(type_id = type_id)
 
+
 class Platform(models.Model):
     platform_id = models.AutoField(primary_key=True)
     platform_name = models.CharField(max_length=32,blank=False)
@@ -150,6 +160,7 @@ class Platform(models.Model):
 
     def get_platform(self, **kwargs):
         return self.objects.get(platform_id = kwargs.get('platform_id'))
+
 
 class GamePlatform(models.Model):
     game_id = models.BigIntegerField(blank=True, null=True)

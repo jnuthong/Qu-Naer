@@ -3,7 +3,7 @@
 __author__ = 'gong'
 __create_time__ = '22/09/2015'
 
-from django.db import models, manager
+from django.db import models
 from django.forms.models import model_to_dict
 from django.utils.timezone import utc
 import datetime
@@ -18,7 +18,7 @@ class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True)
     game_id = models.BigIntegerField(blank=True, null=False)
     user_id = models.BigIntegerField(blank=True, null=False)
-    mark_id = models.BigIntegerField(blank=False, null=False)
+    score = models.PositiveSmallIntegerField(blank=False, null=False)
     comment_content = models.CharField(max_length=Comment_Length, blank=True, null=True)
     game_picture = models.CharField(max_length=128, blank=True, null=True)
     reply_comment_id = models.BigIntegerField(blank=True, null=True)
@@ -32,52 +32,57 @@ class Comment(models.Model):
 
     class Meta:
         db_table = 'rdb_comment'
-        #ordering = ['user_id', '-update_time']
-        #index_together = [
-        #    ["post_id", "comment_status"],
-        #    ["user_id", "update_time", "comment_status"],
-        #    ["post_user_id", "update_time", "comment_status"],
-        #    ["discuss_user_id", "update_time", "comment_status"],
-        #]
+        managed = True
 
-    def save(self, *args, **kwargs):
+    @classmethod
+    def save(cls, *args, **kwargs):
         """
         save the change after you modify or create a new comment
         """
-        if not self.create_time:
-            self.create_time = datetime.datetime.utcnow().replace(tzinfo=utc)
-        self.update_time = datetime.datetime.utcnow().replace(tzinfo=utc)
-        super(Comment, self).save(*args, **kwargs)
-        return self
+        if not cls.create_time:
+            cls.create_time = datetime.datetime.utcnow().replace(tzinfo=utc)
+        cls.update_time = datetime.datetime.utcnow().replace(tzinfo=utc)
+        super(Comment, cls).save(*args, **kwargs)
+        return cls
 
-    def update_by_comment_id(self, *arg, **kwargs):
+    @classmethod
+    def update_by_comment_id(cls, *arg, **kwargs):
         """
         Update the comment content by comment id
         """
         if 'comment_content' in kwargs.keys():
-            self.comment_content = kwargs.get('comment_content')
-        self.save()
-        return self
+            cls.comment_content = kwargs.get('comment_content')
+        cls.save()
+        return cls
 
-    def read_by_comment_id(self, *arg, **kwargs):
+    @classmethod
+    def get_comment_list(cls, game_id, page_num):
+        offset = (page_num-1)*9
+        limit = offset + 9
+        ret = []
+        qs = []
+        try:
+            qs = cls.objects.filter(game_id=game_id)[offset:limit]
+        except Exception as e:
+            print('get_comment_list error : %s' % str(e))
+        for comment in qs:
+            ret.append(comment.comment_id)
+        return ret
+
+    @classmethod
+    def get_one_comment(cls, comment_id):
         """
         Query a comment by comment id, this default dict could change in the further base on the requirement
         """
-        return model_to_dict(self, fields=['user_id',
-                                           'comment_content',
-                                           'post_id',
-                                           'create_time',
-                                           'update_time',
-                                           'discuss_comment_id',
-                                           'discuss_user_id'])
+        return cls.objects.filter(comment_id=comment_id)
 
-    def delete_by_comment_id(self, *arg, **kwargs):
+    @classmethod
+    def delete_by_comment_id(cls, comment_id):
         """
         Delete a comment by comment id, here use hard delete, which mean real delete, please care with this operation
         """
         try:
-            self.comment_status = 1
-            self.save()
+            cls.objects.filter(comment_id=comment_id).update(comment_status=1)
         except Exception as e:
             return dict(msg="Error in delete comment:comment_id: , error msg: %s" % str(e))
 
@@ -86,3 +91,23 @@ class Mark(models.Model):
     """
     Mark model for games
     """
+    mark_id = models.AutoField(primary_key=True)
+    game_id = models.BigIntegerField(blank=True, null=False)
+    score = models.FloatField(blank=False, null=False)
+
+    class Meta:
+        db_table = 'rdb_mark'
+        managed = True
+
+    @classmethod
+    def save(cls, *args, **kwargs):
+        """
+        save the change after you modify or create a new comment
+        """
+        super(Mark, cls).save(*args, **kwargs)
+        return cls
+
+    @classmethod
+    def get_by_game_id(cls, game_id):
+        return cls.objects.get(game_id=game_id)
+
